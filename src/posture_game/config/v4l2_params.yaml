@@ -1,0 +1,10 @@
+v4l2_camera:
+  ros__parameters:
+    camera_name: webcam_v4l2
+    image_size: [640, 480]
+    pixel_format: "YUYV"  
+    output_encoding: "yuv422_yuy2"
+    frame_rate: 30.0
+    io_method: mmap
+    use_sensor_data_qos: true
+    brightness: 10

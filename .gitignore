@@ -1,0 +1,25 @@
+# ROS 2 build artifacts
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Modelos grandes o binarios
+*.onnx
+*.pb
+*.wav
+*.mp3
+*.h5
+*.jpg
+
+# Archivos temporales o de sistema
+*.swp
+*.tmp
+*.bak
+.DS_Store
+*.h5
+*.h5

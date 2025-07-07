@@ -1,0 +1,24 @@
+{
+    "Nombre": "Erick",
+    "Fecha": "2025-07-05 18:08:16",
+    "Puntaje": 1,
+    "Duracion total del juego": 86.52,
+    "Tiempo promedio de respuesta": 0,
+    "Desviacion estandar de respuesta": 0,
+    "Total de intentos": 4,
+    "Nivel del primer error": 1,
+    "Errores por posturas": {
+        "derecho arriba": 0,
+        "izquierdo arriba": 1,
+        "brazos en x": 0,
+        "puño derecho": 0,
+        "puño izquierdo": 0,
+        "ambos puños": 0,
+        "derecho horizontal": 0,
+        "izquierdo horizontal": 0,
+        "ambos brazos horizontales": 2,
+        "muñeca en nariz": 1
+    },
+    "Emociones": [],
+    "Tiempo de respuesta": []
+}
