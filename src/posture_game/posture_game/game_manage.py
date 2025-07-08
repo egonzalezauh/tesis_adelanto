@@ -90,7 +90,8 @@ class GameManager(Node):
 
 
     def play(self):
-        name = input(" Nombre del niño: ")
+        #name = input(" Nombre del niño: ")
+        name = "pochi"
         self.show_message(random.choice(self.messages.welcome_messages))
         self.show_message("Memoriza la secuencia completa y haz las posturas en ese mismo orden")
 
