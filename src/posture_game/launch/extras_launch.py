@@ -4,26 +4,12 @@ from launch_ros.actions import Node
 def generate_launch_description():
     return LaunchDescription([
 
-        #Nodo de escucha de cámara 
-        #Node(
-            #package='posture_game',
-            #executable='camera_listener',
-            #output='log'
-        #),
-
         # Nodo de validación de posturas
         Node(
             package='posture_game',
             executable='checker_node',
             output='screen'
         ),
-
-        #Nodo auxiliar (dummy para debug o test)
-        #Node(
-            #package='posture_game',
-            #executable='dummy_subscriber',
-            #output='log'
-        #),
 
         # Nodo de voz TTS
         Node(
