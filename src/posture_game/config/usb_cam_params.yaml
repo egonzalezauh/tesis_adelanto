@@ -1,11 +1,11 @@
 usb_cam:
   ros__parameters:
-    framerate: 30.0
+    framerate: 15.0
     image_width: 640
     image_height: 480
     pixel_format: yuyv
     io_method: mmap
-    brightness: 10
+    #brightness: 10
     #autoexposure: false
     #exposure: 40
     #auto_white_balance: false
