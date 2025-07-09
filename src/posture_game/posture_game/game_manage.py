@@ -18,8 +18,8 @@ class GameManager(Node):
         self.TIME_LIMIT = 4
         self.MAX_ATTEMPTS = 3
         self.POSTURES = [
-            "derecho arriba", "izquierdo arriba", "brazos en x", "puño derecho", "puño izquierdo",
-            "ambos puños", "derecho horizontal", "izquierdo horizontal", "ambos brazos horizontales", "muñeca en nariz"
+            "brazo derecho arriba", "brazo izquierdo arriba", "brazos en x", "puño derecho", "puño izquierdo",
+            "ambos puños", "brazo derecho horizontal", "brazo izquierdo horizontal", "ambos brazos horizontales", "muñeca en nariz"
         ]
 
         # Estado del juego
