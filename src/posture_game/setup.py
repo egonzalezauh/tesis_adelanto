@@ -32,8 +32,6 @@ setup(
         'console_scripts': [
             'game_manage = posture_game.game_manage:main',
             'checker_node = posture_game.checker_node:main',
-            'camera_listener = posture_game.camera_listener_node:main',
-            'dummy_subscriber = posture_game.dummy_subscriber:main',
             'speaker_node = posture_game.speaker_node:main',
             'detect_emotions_node = posture_game.detect_emotions_node:main',
         ],

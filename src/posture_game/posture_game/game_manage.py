@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float32MultiArray, Bool, Float32, String
+from std_msgs.msg import Float32MultiArray, Bool, Float32, String, Int16
 import random
 import time
 import statistics
@@ -31,7 +31,7 @@ class GameManager(Node):
         self.response_times = []
         self.errors_by_pose = [0 for _ in self.POSTURES]
         self.first_error_level = None
-        self.emotions = []
+        self.emotion_counts = {"Angry": 0,"Disgust": 0,"Fear": 0,"Happy": 0,"Sad": 0,"Surprise": 0,"Neutral": 0}
         self.game_active = True
         self.last_help_shown = 0
 
@@ -41,10 +41,15 @@ class GameManager(Node):
 
 
         #Subscripciones
-        self.duration_pub = self.create_subscription(Float32, '/pose_duration', self.duration_callback, 10) #Recibe la duracion de la pose
-        self.result_received = None
-        self.result_sub = self.create_subscription(Bool, '/pose_result', self.result_callback, 10) #Recibe el resultado de la pose
+        self.EMOTIONS_LIST = ["Angry", "Disgust", "Fear", "Happy", "Sad", "Surprise", "Neutral"]
+        self.emotions_sub = self.create_subscription(Int16, '/emotion', self.emotion_callback, 10)
+
+        self.duration_sub = self.create_subscription(Float32, '/pose_duration', self.duration_callback, 10) #Recibe la duracion de la pose
         self.duration_received = None
+
+        self.result_sub = self.create_subscription(Bool, '/pose_result', self.result_callback, 10) #Recibe el resultado de la pose
+        self.result_received = None
+
         self.audio_on_sub = self.create_subscription(Bool, '/audio_playing', self.audio_status_callback, 10) #Recibe el status del TTS 
         self.audio_playing = False
         
@@ -60,6 +65,16 @@ class GameManager(Node):
 
     def duration_callback(self, msg):
         self.duration_received = msg.data
+
+    def emotion_callback(self, msg):
+        try:
+            emotion_id = msg.data
+            if 0 <= emotion_id < len(self.EMOTIONS_LIST):
+                label = self.EMOTIONS_LIST[emotion_id]
+                self.emotion_counts[label] += 1
+        except Exception as e:
+            self.get_logger().warn(f"[Emotions] Error: {e}")
+
 
     def show_message(self, msg):
 
@@ -102,8 +117,12 @@ class GameManager(Node):
             self.show_message(f" Nivel {len(self.sequence) + 1}")
 
             if self.success or len(self.sequence) == 0:
-                new_pose = random.choice(range(len(self.POSTURES)))
+                while True:
+                    new_pose = random.choice(range(len(self.POSTURES)))
+                    if len(self.sequence) == 0 or new_pose != self.sequence[-1]:
+                        break
                 full_sequence = self.sequence + [new_pose]
+
 # ---------------------------------------------------------------------------------------------------------------
             # Determinar ayuda si aplica
             if self.total_fails == 1:
@@ -217,7 +236,7 @@ class GameManager(Node):
         self.stats_manager.save_stats(
             name=name,
             score=self.score,
-            emotions=self.emotions,
+            emotions=self.emotion_counts,
             total_duration=total_time,
             avg_response_time=avg_time,
             response_times=self.response_times,

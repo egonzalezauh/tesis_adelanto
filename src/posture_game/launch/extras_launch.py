@@ -18,13 +18,19 @@ def generate_launch_description():
             output='log'
         ),
 
+        Node(
+            package='posture_game',
+            executable='detect_emotions_node',
+            output='log'
+        ),
+
         # Nodo de la cámara (USB_CAM)
         Node(
             package='usb_cam',
             executable='usb_cam_node_exe',
             name='usb_cam',
             parameters=['/home/erickgonza/ros2_tesis/src/posture_game/config/usb_cam_params.yaml'],
-            output='screen'
+            output='log'
         ),
 
         #Node(

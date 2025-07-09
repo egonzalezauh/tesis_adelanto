@@ -1,0 +1,38 @@
+{
+    "Nombre": "Iesus",
+    "Fecha": "2025-07-09 13:54:50",
+    "Puntaje": 2,
+    "Duracion total del juego": 107.01,
+    "Tiempo promedio de respuesta": 1.26,
+    "Desviacion estandar de respuesta": 0.38,
+    "Total de intentos": 9,
+    "Nivel del primer error": 2,
+    "Errores por posturas": {
+        "brazo derecho": 0,
+        "brazo izquierdo bien alto": 0,
+        "brazos en x": 0,
+        "puño derecho": 0,
+        "puño izquierdo": 0,
+        "ambos puños": 1,
+        "brazo derecho horizontal": 0,
+        "brazo izquierdo horizontal": 0,
+        "ambos brazos horizontales": 3,
+        "muñeca en nariz": 0
+    },
+    "Emociones": {
+        "Angry": 2,
+        "Disgust": 0,
+        "Fear": 2,
+        "Happy": 136,
+        "Sad": 82,
+        "Surprise": 0,
+        "Neutral": 905
+    },
+    "Tiempo de respuesta": [
+        1.13,
+        1.81,
+        0.96,
+        1.5,
+        0.92
+    ]
+}
