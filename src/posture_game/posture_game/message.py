@@ -15,7 +15,7 @@ class MessageManager:
             "Excelente memoria para repetir la secuencia",
             "Hiciste perfectas las posturas",
             "Tus posturas son increibles",
-            "Genial, Sigue recordando secuencias",
+            "Genial, sigue recordando secuencias",
             "Tu concentración es increíble"
         ]
 
