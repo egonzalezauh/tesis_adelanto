@@ -116,21 +116,36 @@ class CheckerNode(Node):
                 elif pose_id == 2:
                     pose_ok = self.detector.are_arms_in_x(lm)
                 elif pose_id == 6:
-                    pose_ok = self.detector.is_arm_extended(lm, "right")
+                    pose_ok = self.detector.is_right_arm_horizontal(lm)
                 elif pose_id == 7:
-                    pose_ok = self.detector.is_arm_extended(lm, "left")
+                    pose_ok = self.detector.is_left_arm_horizontal(lm)
                 elif pose_id == 8:
-                    pose_ok = self.detector.is_arm_extended(lm, "right") and self.detector.is_arm_extended(lm, "left")
+                    pose_ok = self.detector.are_both_arms_horizontal(lm)
                 elif pose_id == 9:
                     pose_ok = self.detector.is_wrist_touching_nose(lm, "right") or self.detector.is_wrist_touching_nose(lm, "left")
 
-            if results.right_hand_landmarks and pose_id in [3, 5]:
-                hand_ok = self.detector.is_fist_closed(results.right_hand_landmarks)
+            # Puño derecho solamente
+            if pose_id == 3 and results.right_hand_landmarks:
+                hand_ok = self.detector.is_right_fist_exclusive(
+                    results.right_hand_landmarks,
+                    results.left_hand_landmarks if results.left_hand_landmarks else None
+                )
 
-            if results.left_hand_landmarks and pose_id in [4, 5]:
-                left_fist = self.detector.is_fist_closed(results.left_hand_landmarks)
-                hand_ok = hand_ok and left_fist if pose_id == 5 else left_fist
+            # Puño izquierdo solamente
+            elif pose_id == 4 and results.left_hand_landmarks:
+                hand_ok = self.detector.is_left_fist_exclusive(
+                    results.left_hand_landmarks,
+                    results.right_hand_landmarks if results.right_hand_landmarks else None
+                )
 
+            # Ambos puños
+            elif pose_id == 5 and results.right_hand_landmarks and results.left_hand_landmarks:
+                hand_ok = self.detector.are_both_fists_closed(
+                    results.right_hand_landmarks,
+                    results.left_hand_landmarks
+                )
+
+            #Verificar validacion
             if pose_ok or hand_ok:
                 self.get_logger().info("✅ Postura detectada correctamente")
                 duration = time.time() - start_time
