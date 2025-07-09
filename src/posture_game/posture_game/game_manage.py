@@ -18,7 +18,7 @@ class GameManager(Node):
         self.TIME_LIMIT = 4
         self.MAX_ATTEMPTS = 3
         self.POSTURES = [
-            "brazo derecho arriba", "brazo izquierdo arriba", "brazos en x", "puño derecho", "puño izquierdo",
+            "brazo derecho", "brazo izquierdo bien alto", "brazos en x", "puño derecho", "puño izquierdo",
             "ambos puños", "brazo derecho horizontal", "brazo izquierdo horizontal", "ambos brazos horizontales", "muñeca en nariz"
         ]
 
@@ -33,6 +33,7 @@ class GameManager(Node):
         self.first_error_level = None
         self.emotions = []
         self.game_active = True
+        self.last_help_shown = 0
 
         # Publicaciones
         self.pose_pub = self.create_publisher(Float32MultiArray, '/current_pose_data', 10) #Publica el ID y el tiempo 
@@ -91,9 +92,9 @@ class GameManager(Node):
 
     def play(self):
         #name = input(" Nombre del niño: ")
-        name = "pochi"
+        name = "pochino"
         self.show_message(random.choice(self.messages.welcome_messages))
-        self.show_message("Memoriza la secuencia completa y haz las posturas en ese mismo orden")
+        self.show_message("Memoriza la secuencias que te dire y haz las posturas en ese mismo orden")
 
 
 
@@ -106,19 +107,29 @@ class GameManager(Node):
 
             # Determinar ayuda si aplica
             if self.total_fails == 1:
+                if self.last_help_shown < 1:
+                    self.show_message("Ayuda 1, te repito la misma secuencia")
+                    self.last_help_shown = 1
+
                 timeout = self.TIME_LIMIT
                 sequence_now = full_sequence
-                self.show_message("ayuda 1, te repito la misma secuencia")
 
             elif self.total_fails == 2:
+                if self.last_help_shown < 2:
+                    self.show_message("Ayuda 2, te doy más tiempo")
+                    self.last_help_shown = 2
+
                 timeout = self.TIME_LIMIT + 6
                 sequence_now = full_sequence
-                self.show_message("ayuda 2, te doy más tiempo")
+
 
             elif self.total_fails == 3:
+                if self.last_help_shown < 3:
+                    self.show_message("Ayuda 3, reduzcamos una postura de la secuencia")
+                    self.last_help_shown = 3
+                    
                 timeout = self.TIME_LIMIT
                 sequence_now = full_sequence[:-1]
-                self.show_message("ayuda 3, reduzcamos una postura de la secuencia")
 
             else:
                 timeout = self.TIME_LIMIT
@@ -132,7 +143,7 @@ class GameManager(Node):
 
                 
                 
-            self.show_message("Repite la secuencia")
+            self.show_message("Ahora tu repite la secuencia")
             
 # ---------------------------------------------------------------------------------------------------------------
             # Validar postura por postura
@@ -162,7 +173,6 @@ class GameManager(Node):
                 if result:
 
                     self.response_times.append(self.duration_received)
-                    self.show_message(random.choice(self.messages.next_messages))
 
                 else:
                     self.success = False
