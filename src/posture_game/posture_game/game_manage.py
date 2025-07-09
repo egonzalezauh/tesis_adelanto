@@ -104,7 +104,7 @@ class GameManager(Node):
             if self.success or len(self.sequence) == 0:
                 new_pose = random.choice(range(len(self.POSTURES)))
                 full_sequence = self.sequence + [new_pose]
-
+# ---------------------------------------------------------------------------------------------------------------
             # Determinar ayuda si aplica
             if self.total_fails == 1:
                 if self.last_help_shown < 1:
@@ -127,7 +127,7 @@ class GameManager(Node):
                 if self.last_help_shown < 3:
                     self.show_message("Ayuda 3, reduzcamos una postura de la secuencia")
                     self.last_help_shown = 3
-                    
+
                 timeout = self.TIME_LIMIT
                 sequence_now = full_sequence[:-1]
 
@@ -136,7 +136,7 @@ class GameManager(Node):
                 sequence_now = full_sequence
 
             self.success = True
-
+# ---------------------------------------------------------------------------------------------------------------
             # Mostrar la secuencia completa
             for pose_id in sequence_now:
                 self.show_message(f" {self.POSTURES[pose_id].upper()}")
@@ -201,6 +201,7 @@ class GameManager(Node):
                 else:
                     rclpy.spin_once(self, timeout_sec=1)
 
+#----------------------------------------------------------------------------------------------------------------
     def end_game(self, name):
         self.show_message(f" Fin del juego, {name}. Puntaje final: {self.score}")
         
