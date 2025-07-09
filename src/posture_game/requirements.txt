@@ -1,6 +1,8 @@
 rclpy
-opencv-python==4.8.1.78
 numpy==1.24.3
+opencv-python==4.11.0.86
+opencv-contrib-python==4.11.0.86
 tensorflow==2.13.0
-mediapipe==0.10.0
-cv_bridge @ git+https://github.com/ros-perception/vision_opencv.git@ros2
+mediapipe==0.10.21
+pygame==2.5.2
+protobuf==4.25.8
