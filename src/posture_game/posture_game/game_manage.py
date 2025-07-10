@@ -52,7 +52,11 @@ class GameManager(Node):
 
         self.audio_on_sub = self.create_subscription(Bool, '/audio_playing', self.audio_status_callback, 10) #Recibe el status del TTS 
         self.audio_playing = False
-        
+
+        self.presence_sub = self.create_subscription(Bool, '/player_present', self.presence_callback, 10)
+        self.person_present = False  # Estado actual
+
+
         # Utilidades
         self.messages = MessageManager()
         self.stats_manager = StatsManager()
@@ -65,6 +69,9 @@ class GameManager(Node):
 
     def duration_callback(self, msg):
         self.duration_received = msg.data
+
+    def presence_callback(self, msg):
+        self.person_present = msg.data
 
     def emotion_callback(self, msg):
         try:
@@ -103,10 +110,21 @@ class GameManager(Node):
         #Pausa breve para naturalidad
         #time.sleep(0.5)
 
-
-
     def play(self):
-        #name = input(" Nombre del niño: ")
+
+        self.show_message("Esperando que alguien esté frente a la cámara...")
+
+        presence_counter = 0
+        required_count = 50  # 50 ciclos de 0.1s = 3 segundos
+
+        #Verificar si hay una persona adelante
+        while presence_counter < required_count:
+            rclpy.spin_once(self, timeout_sec=0.1)
+            if self.person_present:
+                presence_counter += 1
+            else:
+                presence_counter = 0  # Reinicia si desaparece
+        
         name = "Iesus"
         self.show_message(random.choice(self.messages.welcome_messages))
         self.show_message("Memoriza la secuencias y haz las posturas en ese mismo orden")

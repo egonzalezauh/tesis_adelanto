@@ -41,6 +41,8 @@ class CheckerNode(Node):
         # Publicaciones
         self.result_publisher = self.create_publisher(Bool, '/pose_result', 10)
         self.duration_pub = self.create_publisher(Float32, '/pose_duration', 10)
+        self.presence_pub = self.create_publisher(Bool, '/player_present', 10)
+
 
         # Variables de validación
         self.validation_thread = None
@@ -48,6 +50,21 @@ class CheckerNode(Node):
 
     def frame_callback(self, msg):
         self.latest_frame = msg
+
+        try:
+            frame_cv2 = self.bridge.imgmsg_to_cv2(msg)
+            bgr = cv2.cvtColor(frame_cv2, cv2.COLOR_YUV2BGR_YUY2)
+            rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+            results = self.holistic.process(rgb)
+
+            # Publicar si hay landmarks
+            msg_out = Bool()
+            msg_out.data = results.pose_landmarks is not None
+            self.presence_pub.publish(msg_out)
+
+        except Exception as e:
+            self.get_logger().warn(f"[Presencia] Error procesando frame: {e}")
+
 
     def validate_pose_callback(self, msg):
         if self.latest_frame is None:
