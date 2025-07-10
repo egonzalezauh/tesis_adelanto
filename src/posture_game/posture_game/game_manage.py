@@ -15,10 +15,10 @@ class GameManager(Node):
         self.get_logger().info("🕹️ Juego de memoria con posturas iniciado")
 
         # Configuraciones
-        self.TIME_LIMIT = 4
+        self.TIME_LIMIT = 5
         self.MAX_ATTEMPTS = 3
         self.POSTURES = [
-            "brazo derecho", "brazo izquierdo bien alto", "brazos en x", "puño derecho", "puño izquierdo",
+            "brazo derecho arriba", "brazo izquierdo bien alto", "brazos en x", "puño derecho", "puño izquierdo",
             "ambos puños", "brazo derecho horizontal", "brazo izquierdo horizontal", "ambos brazos horizontales", "muñeca en nariz"
         ]
 
@@ -62,6 +62,9 @@ class GameManager(Node):
         # Utilidades
         self.messages = MessageManager()
         self.stats_manager = StatsManager()
+
+
+
 
     def audio_status_callback(self, msg):
         self.audio_playing = msg.data  #True cuando habla, False cuando termina
@@ -109,14 +112,10 @@ class GameManager(Node):
             wait_time += 0.1
             if wait_time > 10.0:
                 break
-            
-        #Pausa breve para naturalidad
-        #time.sleep(0.5)
 
     def play(self):
 
-        self.show_message("Esperando que alguien esté frente a la cámara...")
-
+    
         presence_counter = 0
         required_count = 50  # 50 ciclos de 0.1s = 3 segundos
 
@@ -128,7 +127,7 @@ class GameManager(Node):
             else:
                 presence_counter = 0  # Reinicia si desaparece
         
-        name = "Iesus"
+        name = "Erick"
         self.show_message(random.choice(self.messages.welcome_messages))
         self.show_message("Memoriza la secuencias y haz las posturas en ese mismo orden")
 
@@ -159,7 +158,7 @@ class GameManager(Node):
                     self.show_message("Ayuda 2, te doy más tiempo")
                     self.last_help_shown = 2
 
-                timeout = self.TIME_LIMIT + 6
+                timeout = self.TIME_LIMIT + 5
                 sequence_now = full_sequence
 
 

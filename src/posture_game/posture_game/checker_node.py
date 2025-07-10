@@ -11,6 +11,9 @@ import threading
 #from rclpy.qos import qos_profile_sensor_data
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.callback_groups import ReentrantCallbackGroup
+from threading import Lock
+
+
 
 class CheckerNode(Node):
 
@@ -22,6 +25,8 @@ class CheckerNode(Node):
         self.detector = PostureDetector()
         self.last_frame_timestamp = None
         self.callback_group = ReentrantCallbackGroup()
+        self.lock_presence = Lock()
+        self.lock_validation = Lock()
 
 
         mp_holistic = mp.solutions.holistic
@@ -64,21 +69,22 @@ class CheckerNode(Node):
         self.validation_thread = None
         self.stop_event = threading.Event()
 
+        #Timer
+        self.presence_timer = self.create_timer(0.5, self.check_presence)
 
 
-
-    def frame_callback(self, msg):
-        self.latest_frame = msg
-        self.last_frame_timestamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
+    def check_presence(self):
+        if self.latest_frame is None:
+            return
 
         try:
-            frame_cv2 = self.bridge.imgmsg_to_cv2(msg)
+            frame_cv2 = self.bridge.imgmsg_to_cv2(self.latest_frame)
             bgr = cv2.cvtColor(frame_cv2, cv2.COLOR_YUV2BGR_YUY2)
             rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-            results = self.holistic_presence.process(rgb)
 
+            with self.lock_presence:
+                results = self.holistic_presence.process(rgb)
 
-            # Publicar si hay landmarks
             msg_out = Bool()
             msg_out.data = results.pose_landmarks is not None
             self.presence_pub.publish(msg_out)
@@ -86,8 +92,9 @@ class CheckerNode(Node):
         except Exception as e:
             self.get_logger().warn(f"[Presencia] Error procesando frame: {e}")
 
-
-
+    def frame_callback(self, msg):
+        self.latest_frame = msg
+        #self.last_frame_timestamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
 
     def validate_pose_callback(self, msg):
         if self.latest_frame is None:
@@ -123,14 +130,14 @@ class CheckerNode(Node):
         start_time = time.time()
         
         # 🛑 Esperar que llegue un frame nuevo
-        initial_ts = self.last_frame_timestamp
-        wait_limit = 2.0  # segundos máximos de espera
-        while self.last_frame_timestamp == initial_ts:
-            if time.time() - start_time > wait_limit:
-                self.get_logger().warn("⏱️ No llegó un nuevo frame para iniciar validación")
-                self.publish_result(False, 0.0)
-                return
-            time.sleep(0.05)
+        #initial_ts = self.last_frame_timestamp
+        #wait_limit = 2.0  # segundos máximos de espera
+        #while self.last_frame_timestamp == initial_ts:
+            #if time.time() - start_time > wait_limit:
+               # self.get_logger().warn("⏱️ No llegó un nuevo frame para iniciar validación")
+                #self.publish_result(False, 0.0)
+               # return
+          #  time.sleep(0.05)
 
         while not self.stop_event.is_set():
             elapsed = time.time() - start_time
@@ -156,8 +163,8 @@ class CheckerNode(Node):
                 self.get_logger().error(f"[ERROR] Conversión de imagen: {e}")
                 continue
             
-
-            results = self.holistic_validate.process(rgb)
+            with self.lock_validation:
+                results = self.holistic_validate.process(rgb)
 
             
             pose_ok = False

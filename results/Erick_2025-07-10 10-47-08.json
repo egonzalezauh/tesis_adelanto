@@ -1,0 +1,202 @@
+{
+    "Nombre": "Erick",
+    "Fecha": "2025-07-10 10:47:08",
+    "Puntaje": 6,
+    "Duracion total del juego (segundos)": 235.86,
+    "Tiempo promedio de respuesta (segundos)": 1.6,
+    "Desviacion estandar de respuesta (segundos)": 1.1,
+    "Total de intentos(fallidos y exitosos)": 29,
+    "Nivel del primer error": 5,
+    "Errores por posturas": {
+        "brazo derecho arriba": 0,
+        "brazo izquierdo bien alto": 0,
+        "brazos en x": 0,
+        "puño derecho": 0,
+        "puño izquierdo": 0,
+        "ambos puños": 0,
+        "brazo derecho horizontal": 0,
+        "brazo izquierdo horizontal": 1,
+        "ambos brazos horizontales": 2,
+        "muñeca en nariz": 1
+    },
+    "Emociones": {
+        "Angry": 0,
+        "Disgust": 0,
+        "Fear": 1,
+        "Happy": 50,
+        "Sad": 145,
+        "Surprise": 0,
+        "Neutral": 2575
+    },
+    "Porcentaje de emociones (%)": {
+        "Neutral": "92.93 %",
+        "Sad": "5.23 %",
+        "Happy": "1.8 %",
+        "Fear": "0.04 %",
+        "Angry": "0.0 %",
+        "Disgust": "0.0 %",
+        "Surprise": "0.0 %"
+    },
+    "Tiempo de respuesta": [
+        3.07,
+        0.85,
+        3.93,
+        0.92,
+        2.06,
+        2.15,
+        0.92,
+        1.45,
+        1.79,
+        2.78,
+        2.17,
+        1.07,
+        1.35,
+        4.02,
+        0.06,
+        0.74,
+        0.88,
+        1.32,
+        0.35,
+        0.76,
+        3.32,
+        1.47,
+        0.5,
+        0.47,
+        1.66
+    ],
+    "Intentos detallados": [
+        {
+            "Postura": "brazo izquierdo horizontal",
+            "Tiempo de respuesta (s)": 3.07,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "brazo izquierdo horizontal",
+            "Tiempo de respuesta (s)": 0.85,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos brazos horizontales",
+            "Tiempo de respuesta (s)": 3.93,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "brazo izquierdo horizontal",
+            "Tiempo de respuesta (s)": 0.92,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos brazos horizontales",
+            "Tiempo de respuesta (s)": 2.06,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos puños",
+            "Tiempo de respuesta (s)": 2.15,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "brazo izquierdo horizontal",
+            "Tiempo de respuesta (s)": 0.92,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos brazos horizontales",
+            "Tiempo de respuesta (s)": 1.45,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos puños",
+            "Tiempo de respuesta (s)": 1.79,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "puño izquierdo",
+            "Tiempo de respuesta (s)": 2.78,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "brazo izquierdo horizontal",
+            "Tiempo de respuesta (s)": 2.17,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "brazo izquierdo horizontal",
+            "Tiempo de respuesta (s)": 1.07,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos brazos horizontales",
+            "Tiempo de respuesta (s)": 1.35,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos puños",
+            "Tiempo de respuesta (s)": 4.02,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "puño izquierdo",
+            "Tiempo de respuesta (s)": 0.06,
+            "Emoción predominante": "No detectada"
+        },
+        {
+            "Postura": "brazo izquierdo horizontal",
+            "Tiempo de respuesta (s)": 0.74,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos brazos horizontales",
+            "Tiempo de respuesta (s)": 0.88,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos puños",
+            "Tiempo de respuesta (s)": 1.32,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "puño izquierdo",
+            "Tiempo de respuesta (s)": 0.35,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "brazo izquierdo horizontal",
+            "Tiempo de respuesta (s)": 0.76,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos brazos horizontales",
+            "Tiempo de respuesta (s)": 3.32,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "ambos puños",
+            "Tiempo de respuesta (s)": 1.47,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "puño izquierdo",
+            "Tiempo de respuesta (s)": 0.5,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "muñeca en nariz",
+            "Tiempo de respuesta (s)": 0.47,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazo izquierdo horizontal",
+            "Tiempo de respuesta (s)": 1.66,
+            "Emoción predominante": "Neutral"
+        }
+    ],
+    "emociones_por_nivel": {
+        "Nivel 1": "Neutral",
+        "Nivel 2": "Neutral",
+        "Nivel 3": "Neutral",
+        "Nivel 4": "Neutral",
+        "Nivel 5": "Neutral",
+        "Nivel 6": "Neutral"
+    }
+}

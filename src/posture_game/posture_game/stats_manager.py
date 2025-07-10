@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from collections import Counter
 
 class StatsManager:
     def __init__(self, output_folder="results"):
@@ -29,7 +30,7 @@ class StatsManager:
                 emotion: "0.0 %" for emotion in emotions.keys()
             }
 
-        emociones_por_nivel = map_emotions_by_level(detailed_attempts)
+        emociones_por_nivel = map_emotions_by_level(detailed_attempts, score)
 
 
 
@@ -60,23 +61,23 @@ class StatsManager:
 
 
 
-def map_emotions_by_level(detailed_attempts):
+
+def map_emotions_by_level(detailed_attempts, niveles_reales):
     emociones_por_nivel = {}
     idx = 0
-    nivel = 1
 
-    while idx < len(detailed_attempts):
+    for nivel in range(1, niveles_reales + 1):
         secuencia = []
-        while idx < len(detailed_attempts):
-            secuencia.append(detailed_attempts[idx]["Emoción predominante"])
-            idx += 1
-            if len(secuencia) == nivel:
+
+        for _ in range(nivel):
+            if idx < len(detailed_attempts):
+                secuencia.append(detailed_attempts[idx]["Emoción predominante"])
+                idx += 1
+            else:
                 break
 
         if secuencia:
-            from collections import Counter
             emo_pred = Counter(secuencia).most_common(1)[0][0]
             emociones_por_nivel[f"Nivel {nivel}"] = emo_pred
-        nivel += 1
 
     return emociones_por_nivel
