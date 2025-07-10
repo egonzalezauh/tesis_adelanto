@@ -1,0 +1,79 @@
+{
+    "Nombre": "Iesus",
+    "Fecha": "2025-07-10 04:28:42",
+    "Puntaje": 2,
+    "Duracion total del juego (segundos)": 118.48,
+    "Tiempo promedio de respuesta (segundos)": 1.73,
+    "Desviacion estandar de respuesta (segundos)": 0.68,
+    "Total de intentos(fallidos y exitosos)": 9,
+    "Nivel del primer error": 3,
+    "Errores por posturas": {
+        "brazo derecho": 0,
+        "brazo izquierdo bien alto": 0,
+        "brazos en x": 0,
+        "puño derecho": 0,
+        "puño izquierdo": 0,
+        "ambos puños": 0,
+        "brazo derecho horizontal": 3,
+        "brazo izquierdo horizontal": 0,
+        "ambos brazos horizontales": 1,
+        "muñeca en nariz": 0
+    },
+    "Emociones": {
+        "Angry": 1,
+        "Disgust": 0,
+        "Fear": 1,
+        "Happy": 994,
+        "Sad": 242,
+        "Surprise": 0,
+        "Neutral": 63
+    },
+    "Porcentaje de emociones (%)": {
+        "Happy": "76.4 %",
+        "Sad": "18.6 %",
+        "Neutral": "4.84 %",
+        "Angry": "0.08 %",
+        "Fear": "0.08 %",
+        "Disgust": "0.0 %",
+        "Surprise": "0.0 %"
+    },
+    "Tiempo de respuesta": [
+        1.92,
+        1.67,
+        1.24,
+        1.04,
+        2.77
+    ],
+    "Intentos detallados": [
+        {
+            "Postura": "brazo derecho horizontal",
+            "Tiempo de respuesta (s)": 1.92,
+            "Emoción predominante": "Happy"
+        },
+        {
+            "Postura": "brazo derecho horizontal",
+            "Tiempo de respuesta (s)": 1.67,
+            "Emoción predominante": "Happy"
+        },
+        {
+            "Postura": "brazos en x",
+            "Tiempo de respuesta (s)": 1.24,
+            "Emoción predominante": "Neutral"
+        },
+        {
+            "Postura": "brazo derecho horizontal",
+            "Tiempo de respuesta (s)": 1.04,
+            "Emoción predominante": "Happy"
+        },
+        {
+            "Postura": "brazos en x",
+            "Tiempo de respuesta (s)": 2.77,
+            "Emoción predominante": "Happy"
+        }
+    ],
+    "emociones_por_nivel": {
+        "Nivel 1": "Happy",
+        "Nivel 2": "Happy",
+        "Nivel 3": "Happy"
+    }
+}

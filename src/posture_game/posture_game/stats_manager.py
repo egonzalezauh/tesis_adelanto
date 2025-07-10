@@ -7,6 +7,7 @@ class StatsManager:
         self.output_folder = output_folder
         os.makedirs(self.output_folder, exist_ok=True)
 
+
     def save_stats(self, name, score, emotions, total_duration,avg_response_time, response_times,response_deviation, total_attempts,errors_per_posture, first_error_level,
                    detailed_attempts):
 
@@ -28,6 +29,9 @@ class StatsManager:
                 emotion: "0.0 %" for emotion in emotions.keys()
             }
 
+        emociones_por_nivel = map_emotions_by_level(detailed_attempts)
+
+
 
         data = {
             "Nombre": name,
@@ -42,7 +46,9 @@ class StatsManager:
             "Emociones": emotions,
             "Porcentaje de emociones (%)": emotion_percentages,
             "Tiempo de respuesta": [round(t, 2) for t in response_times],
-            "Intentos detallados": detailed_attempts
+            "Intentos detallados": detailed_attempts,
+            "emociones_por_nivel": emociones_por_nivel,
+
 
         }
 
@@ -51,3 +57,26 @@ class StatsManager:
             json.dump(data, f, indent=4, ensure_ascii=False)
 
         print(f"✅ Results saved in: {filename}")
+
+
+
+def map_emotions_by_level(detailed_attempts):
+    emociones_por_nivel = {}
+    idx = 0
+    nivel = 1
+
+    while idx < len(detailed_attempts):
+        secuencia = []
+        while idx < len(detailed_attempts):
+            secuencia.append(detailed_attempts[idx]["Emoción predominante"])
+            idx += 1
+            if len(secuencia) == nivel:
+                break
+
+        if secuencia:
+            from collections import Counter
+            emo_pred = Counter(secuencia).most_common(1)[0][0]
+            emociones_por_nivel[f"Nivel {nivel}"] = emo_pred
+        nivel += 1
+
+    return emociones_por_nivel
