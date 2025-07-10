@@ -6,7 +6,7 @@ import time
 import statistics
 from posture_game.message import MessageManager
 from posture_game.stats_manager import StatsManager
-
+from collections import Counter 
 
 class GameManager(Node):
     def __init__(self):
@@ -29,6 +29,8 @@ class GameManager(Node):
         self.success = True
         self.start_time = time.time()
         self.response_times = []
+        self.detailed_attempts = []
+        self.emotions_this_attempt = [] 
         self.errors_by_pose = [0 for _ in self.POSTURES]
         self.first_error_level = None
         self.emotion_counts = {"Angry": 0,"Disgust": 0,"Fear": 0,"Happy": 0,"Sad": 0,"Surprise": 0,"Neutral": 0}
@@ -78,7 +80,8 @@ class GameManager(Node):
             emotion_id = msg.data
             if 0 <= emotion_id < len(self.EMOTIONS_LIST):
                 label = self.EMOTIONS_LIST[emotion_id]
-                self.emotion_counts[label] += 1
+                self.emotion_counts[label] += 1  #acumulador general 
+                self.emotions_this_attempt.append(label) #solo para un intento
         except Exception as e:
             self.get_logger().warn(f"[Emotions] Error: {e}")
 
@@ -178,13 +181,14 @@ class GameManager(Node):
             for pose_id in sequence_now:
                 self.show_message(f" {self.POSTURES[pose_id].upper()}")
 
-                
-                
             self.show_message("Ahora tu repite la secuencia")
+
             
+
 # ---------------------------------------------------------------------------------------------------------------
             # Validar postura por postura
             for idx, expected in enumerate(sequence_now):
+                self.emotions_this_attempt = []  # limpiar antes de cada intento
                 self.result_received = None
                 self.duration_received = None
 
@@ -208,8 +212,23 @@ class GameManager(Node):
 
 
                 if result:
-
                     self.response_times.append(self.duration_received)
+
+                    # Analizar emociones detectadas durante este intento
+                    if self.emotions_this_attempt:
+                        from collections import Counter
+                        counter = Counter(self.emotions_this_attempt)
+                        predominant_emotion = counter.most_common(1)[0][0]
+                    else:
+                        predominant_emotion = "No detectada"
+
+                    # Guardar intento detallado con postura, tiempo y emoción
+                    self.detailed_attempts.append({
+                        "Postura": self.POSTURES[expected],
+                        "Tiempo de respuesta (s)": round(self.duration_received, 2),
+                        "Emoción predominante": predominant_emotion
+                    })
+
 
                 else:
                     self.success = False
@@ -261,7 +280,8 @@ class GameManager(Node):
             response_deviation=std_dev,
             total_attempts=total_attempts,
             errors_per_posture=error_stats,
-            first_error_level=self.first_error_level
+            first_error_level=self.first_error_level,
+            detailed_attempts=self.detailed_attempts
         )
 
 

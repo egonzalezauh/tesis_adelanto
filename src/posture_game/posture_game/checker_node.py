@@ -23,6 +23,7 @@ class CheckerNode(Node):
 
         self.callback_group = ReentrantCallbackGroup()
 
+
         mp_holistic = mp.solutions.holistic
         self.holistic = mp_holistic.Holistic(
             static_image_mode=False,
@@ -47,6 +48,7 @@ class CheckerNode(Node):
         # Variables de validación
         self.validation_thread = None
         self.stop_event = threading.Event()
+        #self.last_frame_timestamp = None
 
     def frame_callback(self, msg):
         self.latest_frame = msg
@@ -64,6 +66,8 @@ class CheckerNode(Node):
 
         except Exception as e:
             self.get_logger().warn(f"[Presencia] Error procesando frame: {e}")
+
+
 
 
     def validate_pose_callback(self, msg):
