@@ -20,12 +20,13 @@ class CheckerNode(Node):
         self.bridge = CvBridge()
         self.latest_frame = None
         self.detector = PostureDetector()
-
+        self.last_frame_timestamp = None
         self.callback_group = ReentrantCallbackGroup()
 
 
         mp_holistic = mp.solutions.holistic
-        self.holistic = mp_holistic.Holistic(
+
+        self.holistic_presence = mp_holistic.Holistic(
             static_image_mode=False,
             model_complexity=1,
             smooth_landmarks=True,
@@ -33,7 +34,21 @@ class CheckerNode(Node):
             refine_face_landmarks=False,
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5
-        )
+            )
+
+        self.holistic_validate = mp_holistic.Holistic(
+            static_image_mode=False,
+            model_complexity=1,
+            smooth_landmarks=True,
+            enable_segmentation=False,
+            refine_face_landmarks=False,
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5
+            )
+
+
+
+        
 
         # Subscripciones
         self.create_subscription(Float32MultiArray,'/current_pose_data',self.validate_pose_callback,10,callback_group=self.callback_group)
@@ -48,16 +63,20 @@ class CheckerNode(Node):
         # Variables de validación
         self.validation_thread = None
         self.stop_event = threading.Event()
-        #self.last_frame_timestamp = None
+
+
+
 
     def frame_callback(self, msg):
         self.latest_frame = msg
+        self.last_frame_timestamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
 
         try:
             frame_cv2 = self.bridge.imgmsg_to_cv2(msg)
             bgr = cv2.cvtColor(frame_cv2, cv2.COLOR_YUV2BGR_YUY2)
             rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-            results = self.holistic.process(rgb)
+            results = self.holistic_presence.process(rgb)
+
 
             # Publicar si hay landmarks
             msg_out = Bool()
@@ -103,6 +122,16 @@ class CheckerNode(Node):
 
         start_time = time.time()
         
+        # 🛑 Esperar que llegue un frame nuevo
+        initial_ts = self.last_frame_timestamp
+        wait_limit = 2.0  # segundos máximos de espera
+        while self.last_frame_timestamp == initial_ts:
+            if time.time() - start_time > wait_limit:
+                self.get_logger().warn("⏱️ No llegó un nuevo frame para iniciar validación")
+                self.publish_result(False, 0.0)
+                return
+            time.sleep(0.05)
+
         while not self.stop_event.is_set():
             elapsed = time.time() - start_time
             if elapsed > timeout:
@@ -116,14 +145,21 @@ class CheckerNode(Node):
 
             try:
                 frame_cv2 = self.bridge.imgmsg_to_cv2(frame)
+                if frame_cv2 is None or frame_cv2.size == 0:
+                    self.get_logger().warn("[Checker] Frame vacío o inválido")
+                    continue
+
+
                 bgr = cv2.cvtColor(frame_cv2, cv2.COLOR_YUV2BGR_YUY2)
                 rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
             except Exception as e:
                 self.get_logger().error(f"[ERROR] Conversión de imagen: {e}")
                 continue
+            
 
-            results = self.holistic.process(rgb)
+            results = self.holistic_validate.process(rgb)
 
+            
             pose_ok = False
             hand_ok = False
 
@@ -198,6 +234,8 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
+        node.holistic_presence.close()
+        node.holistic_validate.close()
         node.destroy_node()
         rclpy.shutdown()
 
