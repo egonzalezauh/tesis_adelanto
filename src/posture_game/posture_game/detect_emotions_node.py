@@ -4,7 +4,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-from std_msgs.msg import Int16
+from std_msgs.msg import Int16, Bool
 import numpy as np
 import tensorflow as tf
 import cv2
@@ -46,8 +46,17 @@ class EmotionDetectionNode(Node):
         self.publisher = self.create_publisher(Int16, '/emotion', 10)
         
         self.subscription = self.create_subscription(Image,'/image_raw',self.image_callback,10)
+        self.create_subscription(Bool, '/shutdown_all', self.shutdown_callback, 10)
+
         
         self.get_logger().info('Emotion Detection Node initialized')
+
+    def shutdown_callback(self, msg):
+        if msg.data:
+            self.get_logger().warn("🛑 Apagando emotion_detection_node (señal /shutdown_all)")
+            self.destroy_node()
+            rclpy.shutdown()
+
 
     def image_callback(self, msg):
         try:

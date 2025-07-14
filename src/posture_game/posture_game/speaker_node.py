@@ -24,15 +24,22 @@ class CocoSpeakerNode(Node):
         self.init_tts()
         
 
-        self.audio_playing_publisher = self.create_publisher(
-            Bool, '/audio_playing', 10)
+        self.audio_playing_publisher = self.create_publisher(Bool, '/audio_playing', 10)
         
-        self.create_subscription(
-            String, '/game_feedback', self.speak_game_feedback, 10)
+        self.create_subscription(String, '/game_feedback', self.speak_game_feedback, 10)
+        self.create_subscription(Bool, '/shutdown_all', self.shutdown_callback, 10)
+
         
         self.speaking_lock = threading.Lock()
         
         self.get_logger().info('Yaren Speaker Node started successfully')
+
+    def shutdown_callback(self, msg):
+        if msg.data:
+            self.get_logger().warn("🛑 Apagando speaker_node (señal /shutdown_all)")
+            self.destroy_node()
+            rclpy.shutdown()
+
     
     def init_tts(self):
         try:

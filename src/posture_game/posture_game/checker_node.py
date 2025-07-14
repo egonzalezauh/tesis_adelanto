@@ -59,6 +59,9 @@ class CheckerNode(Node):
         self.create_subscription(Float32MultiArray,'/current_pose_data',self.validate_pose_callback,10,callback_group=self.callback_group)
         self.create_subscription(Image,'/image_raw',self.frame_callback,10,callback_group=self.callback_group)
 
+
+
+
         # Publicaciones
         self.result_publisher = self.create_publisher(Bool, '/pose_result', 10)
         self.duration_pub = self.create_publisher(Float32, '/pose_duration', 10)
@@ -71,6 +74,8 @@ class CheckerNode(Node):
 
         #Timer
         self.presence_timer = self.create_timer(0.5, self.check_presence)
+
+
 
 
     def check_presence(self):

@@ -39,7 +39,9 @@ class GameManager(Node):
 
         # Publicaciones
         self.pose_pub = self.create_publisher(Float32MultiArray, '/current_pose_data', 10) #Publica el ID y el tiempo 
-        self.voice_pub = self.create_publisher(String, '/game_feedback', 10) #Publica el string a reproducir 
+        self.voice_pub = self.create_publisher(String, '/game_feedback', 10) #Publica el string a reproducir
+        self.shutdown_all_pub = self.create_publisher(Bool, '/shutdown_all', 10) #Publica que el juego se ha acabado para apagar otros nodos
+
 
 
         #Subscripciones
@@ -282,6 +284,10 @@ class GameManager(Node):
             first_error_level=self.first_error_level,
             detailed_attempts=self.detailed_attempts
         )
+        self.shutdown_all_pub.publish(Bool(data=True))
+        self.get_logger().info("🛑 Señal de apagado general enviada (/shutdown_all)")
+
+
 
 
 def main(args=None):
