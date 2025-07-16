@@ -6,7 +6,8 @@ import time
 import statistics
 from posture_game.message import MessageManager
 from posture_game.stats_manager import StatsManager
-from collections import Counter 
+from collections import Counter
+import threading
 
 class GameManager(Node):
     def __init__(self):
@@ -41,6 +42,8 @@ class GameManager(Node):
         self.pose_pub = self.create_publisher(Float32MultiArray, '/current_pose_data', 10) #Publica el ID y el tiempo 
         self.voice_pub = self.create_publisher(String, '/game_feedback', 10) #Publica el string a reproducir
         self.shutdown_all_pub = self.create_publisher(Bool, '/shutdown_all', 10) #Publica que el juego se ha acabado para apagar otros nodos
+        self.visual_pub = self.create_publisher(String, '/yaren_visual_state', 10)
+
 
 
 
@@ -90,7 +93,6 @@ class GameManager(Node):
         except Exception as e:
             self.get_logger().warn(f"[Emotions] Error: {e}")
 
-
     def show_message(self, msg):
 
         print(f"\n {msg}\n")
@@ -115,6 +117,29 @@ class GameManager(Node):
             if wait_time > 10.0:
                 break
 
+    def speak_and_pose(self, text: str, pose: str):
+        def hablar():
+            tts_msg = String()
+            tts_msg.data = text
+            self.voice_pub.publish(tts_msg)
+
+        def mover():
+            pose_msg = String()
+            pose_msg.data = pose.lower()
+            self.visual_pub.publish(pose_msg)
+            self.get_logger().info(f"🦾 Postura enviada a Yaren: {pose}")
+
+        t1 = threading.Thread(target=hablar)
+        t2 = threading.Thread(target=mover)
+
+        t1.start()
+        t2.start()
+        t1.join()
+        t2.join()
+
+
+
+
     def play(self):
 
     
@@ -130,10 +155,10 @@ class GameManager(Node):
                 presence_counter = 0  # Reinicia si desaparece
         
         name = "Erick"
-        self.show_message(random.choice(self.messages.welcome_messages))
-        self.show_message("Memoriza la secuencias y haz las posturas en ese mismo orden")
 
 
+        #self.speak_and_pose("Bienvenido al juego de las posturas", "start")
+        self.speak_and_pose("Memoriza la secuencia y haz las posturas en ese mismo orden", "motivated")
 
         while self.game_active:
             self.show_message(f" Nivel {len(self.sequence) + 1}")
