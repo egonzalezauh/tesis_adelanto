@@ -1,0 +1,66 @@
+{
+    "Nombre": "Erick",
+    "Fecha": "2025-07-16 14:23:02",
+    "Puntaje": 2,
+    "Duracion total del juego (segundos)": 123.24,
+    "Tiempo promedio de respuesta (segundos)": 3.91,
+    "Desviacion estandar de respuesta (segundos)": 0.68,
+    "Total de intentos(fallidos y exitosos)": 7,
+    "Nivel del primer error": 1,
+    "Errores por posturas": {
+        "brazo derecho arriba": 1,
+        "brazo izquierdo bien alto": 0,
+        "brazos en x": 0,
+        "puño derecho": 0,
+        "puño izquierdo": 0,
+        "ambos puños": 0,
+        "brazo derecho horizontal": 0,
+        "brazo izquierdo horizontal": 0,
+        "ambos brazos horizontales": 0,
+        "muñeca en nariz": 3
+    },
+    "Emociones": {
+        "Angry": 44,
+        "Disgust": 0,
+        "Fear": 0,
+        "Happy": 39,
+        "Sad": 545,
+        "Surprise": 0,
+        "Neutral": 168
+    },
+    "Porcentaje de emociones (%)": {
+        "Sad": "68.47 %",
+        "Neutral": "21.11 %",
+        "Angry": "5.53 %",
+        "Happy": "4.9 %",
+        "Disgust": "0.0 %",
+        "Fear": "0.0 %",
+        "Surprise": "0.0 %"
+    },
+    "Tiempo de respuesta": [
+        3.13,
+        4.33,
+        4.26
+    ],
+    "Intentos detallados": [
+        {
+            "Postura": "muñeca en nariz",
+            "Tiempo de respuesta (s)": 3.13,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "muñeca en nariz",
+            "Tiempo de respuesta (s)": 4.33,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazo izquierdo horizontal",
+            "Tiempo de respuesta (s)": 4.26,
+            "Emoción predominante": "Sad"
+        }
+    ],
+    "emociones_por_nivel": {
+        "Nivel 1": "Sad",
+        "Nivel 2": "Sad"
+    }
+}

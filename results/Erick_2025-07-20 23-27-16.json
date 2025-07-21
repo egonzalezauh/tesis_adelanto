@@ -1,0 +1,177 @@
+{
+    "Nombre": "Erick",
+    "Fecha": "2025-07-20 23:27:16",
+    "Puntaje": 5,
+    "Duracion total del juego (segundos)": 224.02,
+    "Tiempo promedio de respuesta (segundos)": 2.43,
+    "Desviacion estandar de respuesta (segundos)": 1.48,
+    "Total de intentos(fallidos y exitosos)": 25,
+    "Nivel del primer error": 5,
+    "Errores por posturas": {
+        "brazo derecho arriba": 0,
+        "brazo izquierdo bien alto": 0,
+        "brazos en x": 2,
+        "puño derecho": 0,
+        "puño izquierdo": 0,
+        "ambos puños": 1,
+        "brazo derecho horizontal": 1,
+        "brazo izquierdo horizontal": 0,
+        "ambos brazos horizontales": 0,
+        "muñeca en nariz": 0
+    },
+    "Emociones": {
+        "Angry": 59,
+        "Disgust": 0,
+        "Fear": 0,
+        "Happy": 102,
+        "Sad": 1293,
+        "Surprise": 0,
+        "Neutral": 22
+    },
+    "Porcentaje de emociones (%)": {
+        "Sad": "87.6 %",
+        "Happy": "6.91 %",
+        "Angry": "4.0 %",
+        "Neutral": "1.49 %",
+        "Disgust": "0.0 %",
+        "Fear": "0.0 %",
+        "Surprise": "0.0 %"
+    },
+    "Tiempo de respuesta": [
+        2.41,
+        4.66,
+        1.2,
+        3.11,
+        1.36,
+        1.2,
+        4.09,
+        1.68,
+        0.97,
+        2.87,
+        4.97,
+        0.92,
+        2.22,
+        5.11,
+        1.8,
+        0.93,
+        4.69,
+        2.74,
+        2.24,
+        0.81,
+        1.07
+    ],
+    "Intentos detallados": [
+        {
+            "Postura": "brazos en x",
+            "Tiempo de respuesta (s)": 2.41,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazos en x",
+            "Tiempo de respuesta (s)": 4.66,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "muñeca en nariz",
+            "Tiempo de respuesta (s)": 1.2,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazos en x",
+            "Tiempo de respuesta (s)": 3.11,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "muñeca en nariz",
+            "Tiempo de respuesta (s)": 1.36,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazo izquierdo bien alto",
+            "Tiempo de respuesta (s)": 1.2,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazos en x",
+            "Tiempo de respuesta (s)": 4.09,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "muñeca en nariz",
+            "Tiempo de respuesta (s)": 1.68,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazo izquierdo bien alto",
+            "Tiempo de respuesta (s)": 0.97,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "ambos puños",
+            "Tiempo de respuesta (s)": 2.87,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazos en x",
+            "Tiempo de respuesta (s)": 4.97,
+            "Emoción predominante": "Happy"
+        },
+        {
+            "Postura": "muñeca en nariz",
+            "Tiempo de respuesta (s)": 0.92,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazo izquierdo bien alto",
+            "Tiempo de respuesta (s)": 2.22,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazos en x",
+            "Tiempo de respuesta (s)": 5.11,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "muñeca en nariz",
+            "Tiempo de respuesta (s)": 1.8,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazo izquierdo bien alto",
+            "Tiempo de respuesta (s)": 0.93,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "ambos puños",
+            "Tiempo de respuesta (s)": 4.69,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazos en x",
+            "Tiempo de respuesta (s)": 2.74,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "muñeca en nariz",
+            "Tiempo de respuesta (s)": 2.24,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "brazo izquierdo bien alto",
+            "Tiempo de respuesta (s)": 0.81,
+            "Emoción predominante": "Sad"
+        },
+        {
+            "Postura": "ambos puños",
+            "Tiempo de respuesta (s)": 1.07,
+            "Emoción predominante": "Sad"
+        }
+    ],
+    "emociones_por_nivel": {
+        "Nivel 1": "Sad",
+        "Nivel 2": "Sad",
+        "Nivel 3": "Sad",
+        "Nivel 4": "Sad",
+        "Nivel 5": "Sad"
+    }
+}

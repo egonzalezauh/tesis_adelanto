@@ -34,6 +34,7 @@ setup(
             'checker_node = posture_game.checker_node:main',
             'speaker_node = posture_game.speaker_node:main',
             'detect_emotions_node = posture_game.detect_emotions_node:main',
+            'yaren_gazebo_controller = posture_game.yaren_gazebo_controller:main',
         ],
     },
 )

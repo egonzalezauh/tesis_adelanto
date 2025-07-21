@@ -37,6 +37,8 @@ class GameManager(Node):
         self.emotion_counts = {"Angry": 0,"Disgust": 0,"Fear": 0,"Happy": 0,"Sad": 0,"Surprise": 0,"Neutral": 0}
         self.game_active = True
         self.last_help_shown = 0
+        self.speak_pose_lock = threading.Lock()
+
 
         # Publicaciones
         self.pose_pub = self.create_publisher(Float32MultiArray, '/current_pose_data', 10) #Publica el ID y el tiempo 
@@ -118,26 +120,28 @@ class GameManager(Node):
                 break
 
     def speak_and_pose(self, text: str, pose: str):
-        def hablar():
-            tts_msg = String()
-            tts_msg.data = text
-            self.voice_pub.publish(tts_msg)
+        with self.speak_pose_lock:
+            def hablar():
+                tts_msg = String()
+                tts_msg.data = text
+                self.voice_pub.publish(tts_msg)
 
-        def mover():
-            pose_msg = String()
-            pose_msg.data = pose.lower()
-            self.visual_pub.publish(pose_msg)
-            self.get_logger().info(f"🦾 Postura enviada a Yaren: {pose}")
+            def mover():
+                pose_msg = String()
+                pose_msg.data = pose.lower()
+                self.visual_pub.publish(pose_msg)
+                self.get_logger().info(f"🦾 Postura enviada a Yaren: {pose}")
+                time.sleep(1.0)  # dejar que se mueva visualmente
 
-        t1 = threading.Thread(target=hablar)
-        t2 = threading.Thread(target=mover)
+            t1 = threading.Thread(target=hablar)
+            t2 = threading.Thread(target=mover)
 
-        t1.start()
-        t2.start()
-        t1.join()
-        t2.join()
+            t1.start()
+            t2.start()
+            t1.join()
+            t2.join()
 
-
+            time.sleep(0.5)  # ❗ Esto da un pequeño respiro antes de otra ejecución
 
 
     def play(self):
@@ -157,8 +161,8 @@ class GameManager(Node):
         name = "Erick"
 
 
-        #self.speak_and_pose("Bienvenido al juego de las posturas", "start")
-        self.speak_and_pose("Memoriza la secuencia y haz las posturas en ese mismo orden", "motivated")
+        self.speak_and_pose("Bienvenido al juego de las posturas", "welcome")
+        self.show_message("Memoriza la secuencia y haz las posturas en ese mismo orden")
 
         while self.game_active:
             self.show_message(f" Nivel {len(self.sequence) + 1}")
@@ -263,7 +267,8 @@ class GameManager(Node):
                     if self.first_error_level is None:
                         self.first_error_level = len(full_sequence)
 
-                    self.show_message(random.choice(self.messages.error_messages))
+                    if self.total_fails < self.MAX_ATTEMPTS:
+                        self.speak_and_pose(random.choice(self.messages.error_messages),"error")
 
                     
                     break  # Se rompe la secuencia tras el primer error
@@ -273,7 +278,7 @@ class GameManager(Node):
             if self.success:
                 self.sequence = full_sequence
                 self.score += 1
-                self.show_message(random.choice(self.messages.success_messages))
+                self.speak_and_pose(random.choice(self.messages.success_messages),"success")
 
             else:
                 self.total_fails += 1
@@ -287,7 +292,7 @@ class GameManager(Node):
     def end_game(self, name):
         self.show_message(f" Fin del juego, {name}. Puntaje final: {self.score}")
         
-        self.show_message(random.choice(self.messages.final_messages))
+        self.speak_and_pose(random.choice(self.messages.final_messages),"end")
 
         total_time = time.time() - self.start_time
         avg_time = sum(self.response_times) / len(self.response_times) if self.response_times else 0
