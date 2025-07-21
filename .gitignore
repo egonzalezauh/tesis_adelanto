@@ -22,4 +22,7 @@ __pycache__/
 *.bak
 .DS_Store
 *.h5
-*.h5
+# Configuración local de VSCode (opcional)
+.vscode/
+#Carpeta results
+results/
