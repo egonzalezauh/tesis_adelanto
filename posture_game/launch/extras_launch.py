@@ -29,17 +29,8 @@ def generate_launch_description():
             package='usb_cam',
             executable='usb_cam_node_exe',
             name='usb_cam',
-            parameters=['/home/erickgonza/ros2_tesis/src/posture_game/config/usb_cam_params.yaml'],
+            parameters=['/home/erickgonza/ros2_tesis/posture_game/config/usb_cam_params.yaml'],
             output='log'
         ),
-
-        #Node(
-            #package='v4l2_camera',
-            #executable='v4l2_camera_node',
-            #name='v4l2_camera',
-            #output='log',
-            #parameters=['/home/erickgonza/ros2_tesis/src/posture_game/config/v4l2_params.yaml']
-        #)
-
  
     ])

@@ -7,7 +7,7 @@ def generate_launch_description():
             package='usb_cam',
             executable='usb_cam_node_exe',
             name='usb_cam',
-            parameters=['/home/erickgonza/ros2_tesis/src/posture_game/config/usb_cam_params.yaml'],
+            parameters=['/home/erickgonza/ros2_tesis/posture_game/config/usb_cam_params.yaml'],
             output='screen'
         )
     ])
