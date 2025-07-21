@@ -8,7 +8,6 @@ import time
 import cv2
 import mediapipe as mp
 import threading
-#from rclpy.qos import qos_profile_sensor_data
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.callback_groups import ReentrantCallbackGroup
 from threading import Lock
