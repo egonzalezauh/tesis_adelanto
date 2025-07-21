@@ -30,11 +30,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'game_manage = posture_game.game_manage:main',
+            'game_manage = posture_game.game_manage_node:main',
             'checker_node = posture_game.checker_node:main',
             'speaker_node = posture_game.speaker_node:main',
             'detect_emotions_node = posture_game.detect_emotions_node:main',
-            'yaren_gazebo_controller = posture_game.yaren_gazebo_controller:main',
+            'movement_controller = posture_game.movement_controller:main',
         ],
     },
 )
