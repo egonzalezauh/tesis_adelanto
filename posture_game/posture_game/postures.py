@@ -1,9 +1,45 @@
-import mediapipe as mp
 import numpy as np
+from typing import List
+
+
+# ---------------------------------------------
+# Clase y función auxiliar para convertir arrays planos en objetos
+# ---------------------------------------------
+
+class MockLandmark:
+    def __init__(self, x, y, z, visibility=1.0):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.visibility = visibility
+
+def parse_landmarks(flat_array: List[float]) -> List["MockLandmark"]:
+        landmarks = []
+        for i in range(0, len(flat_array), 3):
+            x = flat_array[i]
+            y = flat_array[i + 1]
+            z = flat_array[i + 2]
+            landmarks.append(MockLandmark(x, y, z))
+        return landmarks
+
+
+# ---------------------------------------------
+# Detector de Posturas (independiente de MediaPipe)
+# ---------------------------------------------
+
 
 class PostureDetector:
     def __init__(self):
-        self.mp_holistic = mp.solutions.holistic
+
+
+        # Índices equivalentes a MediaPipe
+        self.NOSE = 0
+        self.LEFT_SHOULDER = 11
+        self.RIGHT_SHOULDER = 12
+        self.LEFT_ELBOW = 13
+        self.RIGHT_ELBOW = 14
+        self.LEFT_WRIST = 15
+        self.RIGHT_WRIST = 16
 
         # Thresholds
         self.ANGLE_THRESHOLD = 160
@@ -17,8 +53,7 @@ class PostureDetector:
     def _euclidean(self, p1, p2):
         return np.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
 
-    def is_fist_closed(self, hand_landmarks):
-        lm = hand_landmarks.landmark
+    def is_fist_closed(self, lm):
         tips = [8, 12, 16, 20]
         pips = [6, 10, 14, 18]
         base = 0
@@ -52,15 +87,14 @@ class PostureDetector:
         return self.is_fist_closed(right_hand) and self.is_fist_closed(left_hand)
 
 
-    def is_right_arm_horizontal(self, landmarks):
-        r_shoulder = landmarks[self.mp_holistic.PoseLandmark.RIGHT_SHOULDER.value]
-        r_elbow = landmarks[self.mp_holistic.PoseLandmark.RIGHT_ELBOW.value]
-        r_wrist = landmarks[self.mp_holistic.PoseLandmark.RIGHT_WRIST.value]
+    def is_right_arm_horizontal(self, lm):
+        r_shoulder = lm[self.RIGHT_SHOULDER]
+        r_elbow = lm[self.RIGHT_ELBOW]
+        r_wrist = lm[self.RIGHT_WRIST]
 
-        l_shoulder = landmarks[self.mp_holistic.PoseLandmark.LEFT_SHOULDER.value]
-        l_elbow = landmarks[self.mp_holistic.PoseLandmark.LEFT_ELBOW.value]
-        l_wrist = landmarks[self.mp_holistic.PoseLandmark.LEFT_WRIST.value]
-
+        l_shoulder = lm[self.LEFT_SHOULDER]
+        l_elbow = lm[self.LEFT_ELBOW]
+        l_wrist = lm[self.LEFT_WRIST]
         # Validar brazo derecho estirado y horizontal
         v1 = np.array([r_shoulder.x - r_elbow.x, r_shoulder.y - r_elbow.y])
         v2 = np.array([r_wrist.x - r_elbow.x, r_wrist.y - r_elbow.y])
@@ -75,14 +109,14 @@ class PostureDetector:
 
         return brazo_derecho_ok and brazo_izquierdo_abajo
 
-    def is_left_arm_horizontal(self, landmarks):
-        l_shoulder = landmarks[self.mp_holistic.PoseLandmark.LEFT_SHOULDER.value]
-        l_elbow = landmarks[self.mp_holistic.PoseLandmark.LEFT_ELBOW.value]
-        l_wrist = landmarks[self.mp_holistic.PoseLandmark.LEFT_WRIST.value]
+    def is_left_arm_horizontal(self, lm):
+        l_shoulder = lm[self.LEFT_SHOULDER]
+        l_elbow = lm[self.LEFT_ELBOW]
+        l_wrist = lm[self.LEFT_WRIST]
 
-        r_shoulder = landmarks[self.mp_holistic.PoseLandmark.RIGHT_SHOULDER.value]
-        r_elbow = landmarks[self.mp_holistic.PoseLandmark.RIGHT_ELBOW.value]
-        r_wrist = landmarks[self.mp_holistic.PoseLandmark.RIGHT_WRIST.value]
+        r_shoulder = lm[self.RIGHT_SHOULDER]
+        r_elbow = lm[self.RIGHT_ELBOW]
+        r_wrist = lm[self.RIGHT_WRIST]
 
         # Validar brazo izquierdo estirado y horizontal
         v1 = np.array([l_shoulder.x - l_elbow.x, l_shoulder.y - l_elbow.y])
@@ -103,14 +137,15 @@ class PostureDetector:
         return self.is_right_arm_horizontal(landmarks) and self.is_left_arm_horizontal(landmarks)
 
 
-    def is_right_arm_up(self, landmarks):
-        r_shoulder = landmarks[self.mp_holistic.PoseLandmark.RIGHT_SHOULDER.value]
-        r_wrist = landmarks[self.mp_holistic.PoseLandmark.RIGHT_WRIST.value]
-        r_elbow = landmarks[self.mp_holistic.PoseLandmark.RIGHT_ELBOW.value]
-        
-        l_shoulder = landmarks[self.mp_holistic.PoseLandmark.LEFT_SHOULDER.value]
-        l_wrist = landmarks[self.mp_holistic.PoseLandmark.LEFT_WRIST.value]
-        l_elbow = landmarks[self.mp_holistic.PoseLandmark.LEFT_ELBOW.value]
+    def is_right_arm_up(self, lm):
+        r_shoulder = lm[self.RIGHT_SHOULDER]
+        r_elbow = lm[self.RIGHT_ELBOW]
+        r_wrist = lm[self.RIGHT_WRIST]
+
+        l_shoulder = lm[self.LEFT_SHOULDER]
+        l_elbow = lm[self.LEFT_ELBOW]
+        l_wrist = lm[self.LEFT_WRIST]
+
 
         right_vertical = r_shoulder.y - r_wrist.y > self.VERTICAL_THRESHOLD
         right_horizontal = abs(r_wrist.x - r_shoulder.x) < self.HORIZONTAL_THRESHOLD
@@ -121,14 +156,14 @@ class PostureDetector:
 
         return right_vertical and right_horizontal and right_straight and left_arm_down
 
-    def is_left_arm_up(self, landmarks):
-        l_shoulder = landmarks[self.mp_holistic.PoseLandmark.LEFT_SHOULDER.value]
-        l_wrist = landmarks[self.mp_holistic.PoseLandmark.LEFT_WRIST.value]
-        l_elbow = landmarks[self.mp_holistic.PoseLandmark.LEFT_ELBOW.value]
+    def is_left_arm_up(self, lm):
+        l_shoulder = lm[self.LEFT_SHOULDER]
+        l_elbow = lm[self.LEFT_ELBOW]
+        l_wrist = lm[self.LEFT_WRIST]
 
-        r_shoulder = landmarks[self.mp_holistic.PoseLandmark.RIGHT_SHOULDER.value]
-        r_wrist = landmarks[self.mp_holistic.PoseLandmark.RIGHT_WRIST.value]
-        r_elbow = landmarks[self.mp_holistic.PoseLandmark.RIGHT_ELBOW.value]
+        r_shoulder = lm[self.RIGHT_SHOULDER]
+        r_elbow = lm[self.RIGHT_ELBOW]
+        r_wrist = lm[self.RIGHT_WRIST]
 
         left_vertical = l_shoulder.y - l_wrist.y > self.VERTICAL_THRESHOLD
         left_horizontal = abs(l_wrist.x - l_shoulder.x) < self.HORIZONTAL_THRESHOLD
@@ -139,11 +174,11 @@ class PostureDetector:
         return left_vertical and left_horizontal and left_straight and right_arm_down
     
 
-    def are_arms_in_x(self, landmarks):
-        rw = landmarks[self.mp_holistic.PoseLandmark.RIGHT_WRIST.value]
-        lw = landmarks[self.mp_holistic.PoseLandmark.LEFT_WRIST.value]
-        rs = landmarks[self.mp_holistic.PoseLandmark.RIGHT_SHOULDER.value]
-        ls = landmarks[self.mp_holistic.PoseLandmark.LEFT_SHOULDER.value]
+    def are_arms_in_x(self, lm):
+        rw = lm[self.RIGHT_WRIST]
+        lw = lm[self.LEFT_WRIST]
+        rs = lm[self.RIGHT_SHOULDER]
+        ls = lm[self.LEFT_SHOULDER]
 
         # 1. ¿Los brazos se cruzan?
         crossed = rw.x < ls.x and lw.x > rs.x
@@ -160,11 +195,11 @@ class PostureDetector:
         return crossed and correct_height and near_chest
 
 
-    def is_wrist_touching_nose(self, landmarks, side="right", threshold=None):
+    def is_wrist_touching_nose(self, lm, side="right", threshold=None):
         if threshold is None:
             threshold = self.NOSE_TOUCH_THRESHOLD
 
-        nose = landmarks[self.mp_holistic.PoseLandmark.NOSE.value]
-        wrist = landmarks[self.mp_holistic.PoseLandmark.RIGHT_WRIST.value] if side == "right" \
-            else landmarks[self.mp_holistic.PoseLandmark.LEFT_WRIST.value]
+        nose = lm[self.NOSE]
+        wrist = lm[self.RIGHT_WRIST] if side == "right" \
+            else lm[self.LEFT_WRIST]
         return self._euclidean(nose, wrist) < threshold

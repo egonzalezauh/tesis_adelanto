@@ -35,6 +35,7 @@ setup(
             'speaker_node = posture_game.speaker_node:main',
             'detect_emotions_node = posture_game.detect_emotions_node:main',
             'movement_controller = posture_game.movement_controller:main',
+            'mediapipe_node = posture_game.mediapipe_node:main',
         ],
     },
 )
