@@ -2,23 +2,24 @@
 <package format="3">
   <name>posture_game</name>
   <version>0.0.1</version>
-  <description>Posture memory game for children with ADHD</description>
-  <maintainer email="erickgonza@todo.todo">erickgonza</maintainer>
-  <license>MIT</license>
+  <description>Paquete que valida posturas usando visión por computadora para un robot terapéutico.</description>
+  <maintainer email="erickgonzalez1306@gmail.com">Erick Gonzalez</maintainer>
+  <license>Apache-2.0</license>
 
   <!-- Dependencias de compilación -->
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <!-- Dependencias de ejecución -->
-  <exec_depend>rclpy</exec_depend>
-  
-  <!-- Dependencias de test -->
-  <test_depend>ament_copyright</test_depend>
-  <test_depend>ament_flake8</test_depend>
-  <test_depend>ament_pep257</test_depend>
-  <test_depend>python3-pytest</test_depend>
+  <!-- Dependencias principales -->
+  <depend>rclcpp</depend>
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>posture_game_interfaces</depend>
+
+  <!-- Dependencias de pruebas opcionales -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
 
   <export>
-    <build_type>ament_python</build_type>
+    <build_type>ament_cmake</build_type>
   </export>
 </package>

@@ -20,6 +20,7 @@ def generate_launch_description():
             output='log'
         ),
 
+        #Nodo detector de emociones
         Node(
             package='posture_game',
             executable='detect_emotions_node',
@@ -38,6 +39,7 @@ def generate_launch_description():
             output='log'
         ),
 
+        #Nodo mediapipe
         Node(
             package='posture_game',
             executable='mediapipe_node',
