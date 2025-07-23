@@ -6,13 +6,24 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(posture_game_interfaces REQUIRED)
+find_package(trajectory_msgs REQUIRED)
+
 
 # Ejecutables de  C++ (pueden haber mas de un add_executable)
 add_executable(checker_node src/checker_node.cpp)
+
 ament_target_dependencies(checker_node
   rclcpp
   std_msgs
   posture_game_interfaces
+  trajectory_msgs
+)
+
+add_executable(movement_publisher_node src/movement_publisher_node.cpp)
+ament_target_dependencies(movement_publisher_node
+  rclcpp
+  std_msgs
+  trajectory_msgs
 )
 
 # Incluir headers
@@ -64,6 +75,7 @@ install(DIRECTORY
 
 install(TARGETS
   checker_node
+  movement_publisher_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -72,6 +84,7 @@ ament_export_dependencies(
   rclpy
   std_msgs
   posture_game_interfaces
+  trajectory_msgs
 )
 
 #include_directories(
