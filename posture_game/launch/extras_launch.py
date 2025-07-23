@@ -37,5 +37,12 @@ def generate_launch_description():
                 'usb_cam_params.yaml')],
             output='log'
         ),
+
+        Node(
+            package='posture_game',
+            executable='mediapipe_node',
+            output='log'
+        ),
+
  
     ])

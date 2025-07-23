@@ -22,10 +22,10 @@ class YarenGazeboController(Node):
     def __init__(self):
         super().__init__('yaren_gazebo_controller')
 
-        #Publicador para mover al robot
+        #Publicador 
         self.publisher = self.create_publisher(JointTrajectory,'/joint_trajectory_controller/joint_trajectory',10)
 
-        # Suscriptor que escucha el estado del juego
+        # Suscriptor 
         self.subscription = self.create_subscription(String,'/yaren_visual_state',self.listener_callback,10)
 
         self.joint_names = [f'joint_{i+1}' for i in range(12)]

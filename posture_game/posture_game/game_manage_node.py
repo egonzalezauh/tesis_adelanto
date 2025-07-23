@@ -97,7 +97,8 @@ class GameManager(Node):
 
     def show_message(self, msg):
 
-        print(f"\n {msg}\n")
+        #Reiniciar estado antes de hablar para evitar race condition logico
+        self.audio_playing = False
 
         #Publicar mensaje
         tts_msg = String()
@@ -146,7 +147,7 @@ class GameManager(Node):
 
     def play(self):
 
-    
+        # -------------------------------------------------------COMENTA/ELIMINA ESTO POCHI-----------------------------------------------
         presence_counter = 0
         required_count = 50  # 50 ciclos de 0.1s = 3 segundos
 
@@ -157,6 +158,7 @@ class GameManager(Node):
                 presence_counter += 1
             else:
                 presence_counter = 0  # Reinicia si desaparece
+        # -------------------------------------------------------COMENTA/ELIMINA ESTO POCHI-----------------------------------------------
         
         name = "Erick"
 
