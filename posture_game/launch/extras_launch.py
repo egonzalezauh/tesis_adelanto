@@ -46,5 +46,12 @@ def generate_launch_description():
             output='log'
         ),
 
+        # Nodo de publicación de movimientos en Gazebo
+        Node(
+            package='posture_game',
+            executable='movement_publisher_node',
+            output='log'
+        ),
+
  
     ])
