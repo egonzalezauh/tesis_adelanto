@@ -5,7 +5,7 @@ def generate_launch_description():
     return LaunchDescription([
         Node(
             package='posture_game',
-            executable='game_manage',
+            executable='game_manage_node.py',
             output='screen'
         )
     ])

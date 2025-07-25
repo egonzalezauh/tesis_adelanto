@@ -51,6 +51,3 @@ class MessageManager:
             "Increible",
             "Genial, sigue así"
         ]
-
-    def get_random_message(self, message_list):
-        return random.choice(message_list)

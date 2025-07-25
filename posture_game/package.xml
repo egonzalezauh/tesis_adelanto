@@ -11,7 +11,7 @@
 
   <!-- Dependencias principales -->
   <depend>rclcpp</depend>
-  <depend>rclpy</depend>
+  <depend>rclpy</depend>  
   <depend>std_msgs</depend>
   <depend>posture_game_interfaces</depend>
   <depend>trajectory_msgs</depend>

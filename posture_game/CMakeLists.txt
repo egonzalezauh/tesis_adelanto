@@ -9,9 +9,21 @@ find_package(posture_game_interfaces REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 
 
+# ========== Agregar la librería auxiliar con postures.cpp ==========
+#Esta es una librería auxiliar que contiene la clase PostureDetector
+# utilizada por nodos como checker_node para validar posturas
+add_library(postures_lib
+  src/postures.cpp
+)
+
+target_include_directories(postures_lib PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
 # Ejecutables de  C++ (pueden haber mas de un add_executable)
 add_executable(checker_node src/checker_node.cpp)
-
+target_link_libraries(checker_node postures_lib)
 ament_target_dependencies(checker_node
   rclcpp
   std_msgs
@@ -76,6 +88,7 @@ install(DIRECTORY
 install(TARGETS
   checker_node
   movement_publisher_node
+  postures_lib
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -87,10 +100,6 @@ ament_export_dependencies(
   trajectory_msgs
 )
 
-#include_directories(
-  #include
-  #${rclcpp_INCLUDE_DIRS}
-#)
 
 ament_export_include_directories(include)
 ament_package()

@@ -1,11 +1,13 @@
+#!/usr/bin/env python3
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray, Bool, Float32, String, Int16
 import random
 import time
 import statistics
-from posture_game.message import MessageManager
-from posture_game.stats_manager import StatsManager
+from message import MessageManager
+from stats_manager import StatsManager
 from collections import Counter
 import threading
 
@@ -77,6 +79,7 @@ class GameManager(Node):
         self.audio_playing = msg.data  #True cuando habla, False cuando termina
 
     def result_callback(self, msg):
+        self.get_logger().info(f"[result_callback] Resultado recibido: {msg.data}")
         self.result_received = msg.data
 
     def duration_callback(self, msg):
@@ -146,7 +149,7 @@ class GameManager(Node):
 
 
     def play(self):
-
+        self.get_logger().info("✅ Entró a play() correctamente")
         # -------------------------------------------------------COMENTA/ELIMINA ESTO POCHI-----------------------------------------------
         presence_counter = 0
         required_count = 50  # 50 ciclos de 0.1s = 3 segundos
@@ -177,7 +180,7 @@ class GameManager(Node):
                 full_sequence = self.sequence + [new_pose]
 
 # ---------------------------------------------------------------------------------------------------------------
-            # Determinar ayuda si aplica
+            # Determinar ayuda si aplicaself.get_logger().info("✅ Entró a play() correctamente")
             if self.total_fails == 1:
                 if self.last_help_shown < 1:
                     self.show_message("Ayuda 1, te repito la misma secuencia")
@@ -325,7 +328,9 @@ class GameManager(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = GameManager()
-    node.play()
+    node.play()  
     node.destroy_node()
     rclpy.shutdown()
 
+if __name__ == '__main__':
+    main()

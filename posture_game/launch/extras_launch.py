@@ -16,14 +16,14 @@ def generate_launch_description():
         # Nodo de voz TTS
         Node(
             package='posture_game',
-            executable='speaker_node',
+            executable='speaker_node.py',
             output='log'
         ),
 
         #Nodo detector de emociones
         Node(
             package='posture_game',
-            executable='detect_emotions_node',
+            executable='detect_emotions_node.py',
             output='log'
         ),
 
@@ -42,7 +42,7 @@ def generate_launch_description():
         #Nodo mediapipe
         Node(
             package='posture_game',
-            executable='mediapipe_node',
+            executable='mediapipe_node.py',
             output='log'
         ),
 
