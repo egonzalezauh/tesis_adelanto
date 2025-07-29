@@ -32,3 +32,6 @@ sudo apt install \
   ros-humble-image-transport \
   ros-humble-launch \
   python3-colcon-common-extensions
+
+
+LIBGL_ALWAYS_SOFTWARE=1 ros2 launch coco_gazebo_sim coco_robot.launch.py
